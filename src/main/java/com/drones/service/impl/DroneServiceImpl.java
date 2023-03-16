@@ -2,7 +2,6 @@ package com.drones.service.impl;
 
 import com.drones.domain.dto.DroneDto;
 import com.drones.domain.entity.DroneEntity;
-import com.drones.domain.entity.MedicationEntity;
 import com.drones.domain.enums.DronStateEnum;
 import com.drones.domain.mapper.DroneMapper;
 import com.drones.repository.DroneRepository;
@@ -10,42 +9,42 @@ import com.drones.service.DroneService;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DroneServiceImpl implements DroneService {
 
-  private final DroneRepository droneRepository;
+  private final DroneRepository repository;
 
-  public DroneServiceImpl(DroneRepository droneRepository) {
-    this.droneRepository = droneRepository;
+  public DroneServiceImpl(DroneRepository repository) {
+    this.repository = repository;
   }
   @Override
-  public ResponseEntity<List<DroneDto>> getAvailableDrones() {
-    List<DroneEntity> entityList = droneRepository.findByState(DronStateEnum.IDLE.toString());
+  public List<DroneDto> getAvailableDrones() {
+    List<DroneEntity> entityList = repository.findByState(DronStateEnum.IDLE.toString());
     if(!entityList.isEmpty()){
-      return ResponseEntity.ok(DroneMapper.INSTANCE.dronesEntitiesToDtos(entityList));
+      return DroneMapper.INSTANCE.dronesEntitiesToDtos(entityList);
     } else {
-      return ResponseEntity.noContent().build();
+      return new ArrayList<>();
     }
   }
 
   @Override
-  public ResponseEntity<Double> checkBatteryLevel(String serialNumber) {
+  public String checkBatteryLevel(Long droneId) {
 
-    Optional<DroneEntity> entity = Optional.ofNullable(droneRepository.findBySerialNumber(serialNumber));
+    Optional<DroneEntity> entity = repository.findById(droneId);
     if(entity.isPresent()){
-      return ResponseEntity.ok(entity.get().getBatteryCapacity());
+      return String.valueOf(entity.get().getBatteryCapacity());
     } else {
-      return ResponseEntity.notFound().build();
+      return null;
     }
   }
 
   @Override
-  public ResponseEntity<DroneDto> registerDrone(DroneDto dto) {
-    DroneEntity entity = droneRepository.save(DroneMapper.INSTANCE.droneDtoToEntity(dto));
-    return ResponseEntity.ok(DroneMapper.INSTANCE.droneEntityToDto(entity));
+  public DroneDto registerDrone(DroneDto dto) {
+    // clean the id in case the user filled it, since the id will be generated automatically
+    dto.setId(null);
+    DroneEntity entity = repository.save(DroneMapper.INSTANCE.droneDtoToEntity(dto));
+    return DroneMapper.INSTANCE.droneEntityToDto(entity);
   }
 }

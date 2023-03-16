@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class DroneDto {
+  private Long id;
   private String serialNumber;
   private DronModelEnum model;
   private double weightLimit;

@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 public interface DroneService {
 
-  ResponseEntity<List<DroneDto>> getAvailableDrones();
-  ResponseEntity<Double> checkBatteryLevel(String serialNumber);
-  ResponseEntity<DroneDto> registerDrone(DroneDto dto);
+  List<DroneDto> getAvailableDrones();
+  String checkBatteryLevel(Long droneId);
+  DroneDto registerDrone(DroneDto dto);
 }
