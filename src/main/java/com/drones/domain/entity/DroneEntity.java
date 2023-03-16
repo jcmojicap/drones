@@ -2,14 +2,11 @@ package com.drones.domain.entity;
 
 import com.drones.domain.enums.DronModelEnum;
 import com.drones.domain.enums.DronStateEnum;
-import java.util.UUID;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -19,16 +16,17 @@ import lombok.Data;
 public class DroneEntity {
 
   @Id
-  private String id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
   @Column(name = "SERIAL_NUMBER")
   private String serialNumber;
   @Column(name = "MODEL")
-  private DronModelEnum model;
+  private String model;
   @Column(name = "WEIGHT_LIMIT")
   private double weightLimit;
   @Column(name = "BATTERY_CAPACITY")
   private double batteryCapacity;
   @Column(name = "STATE")
-  private DronStateEnum state;
+  private String state;
 
 }

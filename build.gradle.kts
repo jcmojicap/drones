@@ -4,7 +4,7 @@ plugins {
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
 }
 
-group = "com.logix"
+group = "com"
 version = "0.0.1-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_11
 

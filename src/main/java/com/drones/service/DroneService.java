@@ -8,6 +8,6 @@ import org.springframework.http.ResponseEntity;
 public interface DroneService {
 
   ResponseEntity<List<DroneDto>> getAvailableDrones();
-  ResponseEntity<DroneDto> checkBatteryLevel(String droneId);
+  ResponseEntity<Double> checkBatteryLevel(String serialNumber);
   ResponseEntity<DroneDto> registerDrone(DroneDto dto);
 }
