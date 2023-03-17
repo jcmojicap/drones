@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -23,5 +24,7 @@ public class MedicationEntity {
   private String code;
   @Column(name = "IMAGE")
   private String pathToImage;
+  @OneToMany(mappedBy = "medication")
+  private List<DeliverEntity> delivers;
 
 }

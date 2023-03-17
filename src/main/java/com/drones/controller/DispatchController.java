@@ -1,5 +1,7 @@
 package com.drones.controller;
 
+import com.drones.domain.dto.DeliverOrderRequestDto;
+import com.drones.domain.dto.DeliverOrderResponseDto;
 import com.drones.domain.dto.DroneDto;
 import com.drones.domain.dto.DroneResponseDto;
 import com.drones.domain.dto.MedicationDto;
@@ -58,6 +60,21 @@ public class DispatchController {
     responseDto.setDrone(droneService.registerDrone(dto));
     return ResponseEntity.ok(responseDto);
   }
+
+  @PostMapping("/drones/drone/{droneId}/load_medications")
+  public ResponseEntity<DeliverOrderResponseDto> loadDroneWithMedication(@PathVariable Long droneId, @RequestBody List<DeliverOrderRequestDto> deliverOrder){
+    DeliverOrderResponseDto response = droneService.loadDrone(droneId, deliverOrder);
+    if (response.getError() == null || response.getError().isEmpty()){
+      return ResponseEntity.ok(response);
+    }
+    return ResponseEntity.badRequest().body(response);
+  }
+
+
+
+
+
+
 
   @GetMapping("/medications/")
   public ResponseEntity<List<MedicationDto>> getMedications(){

@@ -2,11 +2,13 @@ package com.drones.domain.entity;
 
 import com.drones.domain.enums.DronModelEnum;
 import com.drones.domain.enums.DronStateEnum;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -28,5 +30,7 @@ public class DroneEntity {
   private double batteryCapacity;
   @Column(name = "STATE")
   private String state;
+  @OneToMany(mappedBy = "drone")
+  private List<DeliverEntity> delivers;
 
 }

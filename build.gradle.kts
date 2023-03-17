@@ -1,7 +1,11 @@
 plugins {
-    java
     id("org.springframework.boot") version "2.7.6"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
+    id("application")
+}
+
+application {
+    mainClassName = "com.drones.DronesApplication"
 }
 
 group = "com"
@@ -29,9 +33,11 @@ dependencies {
     annotationProcessor("org.mapstruct:mapstruct-processor:1.5.3.Final")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("com.h2database:h2:1.3.148")
+    implementation ("org.springframework.boot:spring-boot-starter-quartz")
 
 }
 
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
