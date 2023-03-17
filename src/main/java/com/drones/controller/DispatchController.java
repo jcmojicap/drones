@@ -70,12 +70,6 @@ public class DispatchController {
     return ResponseEntity.badRequest().body(response);
   }
 
-
-
-
-
-
-
   @GetMapping("/medications/")
   public ResponseEntity<List<MedicationDto>> getMedications(){
     return ResponseEntity.ok(medicationService.getAllMedication());
