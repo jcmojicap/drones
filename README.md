@@ -64,16 +64,10 @@ curl --location 'localhost:8080/medications/medication' \
 }'
 ```
 ### Get all registered medications:
+_**Disclaimer:** This endpoint was not part of the exercise, but I considered important to be able to add medications without doing it by going directly to the database_
 ```
-curl --location --request GET 'localhost:8080/medications/' \
---header 'Content-Type: application/json' \
---data '{
-    "id": 1,
-    "name": "AceTaMinoF3n_250-mg",
-    "weight": 150,
-    "code": "AceTaMinoF3n_250mg",
-    "pathToImage": "/image"
-}'
+curl --location 'localhost:8080/medications/' \
+--data ''
 ```
 ### Load a drone with medications:
 ```
