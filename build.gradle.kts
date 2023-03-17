@@ -34,6 +34,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("com.h2database:h2:1.3.148")
     implementation ("org.springframework.boot:spring-boot-starter-quartz")
+    testImplementation ("org.mockito:mockito-core:4.1.0")
 
 }
 
