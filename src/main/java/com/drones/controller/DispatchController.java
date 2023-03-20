@@ -8,6 +8,10 @@ import com.drones.domain.dto.MedicationDto;
 import com.drones.domain.dto.MedicationResponseDto;
 import com.drones.service.DroneService;
 import com.drones.service.MedicationService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,14 +37,24 @@ public class DispatchController {
     this.medicationService = medicationService;
   }
 
-
-  @GetMapping("/drones/available")
+  @ApiOperation(value = "Get the list of available drones")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "OK", response = DroneDto.class, responseContainer = "List")
+      })
+  @GetMapping(value = "/drones/available", produces = "application/json; charset=UTF-8")
   public ResponseEntity<List<DroneDto>> getAvailableDrones(){
     return ResponseEntity.ok(droneService.getAvailableDrones());
   }
 
-  @GetMapping("/drones/drone/{droneId}/battery")
-  public ResponseEntity<String> getBatteryLevelDrone(@PathVariable(name = "droneId") String droneId){
+  @ApiOperation(value = "Get the battery Level of a drone",
+      response = String.class
+      )
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "OK", response = String.class, responseContainer = "List"),
+      @ApiResponse(code = 400, message= "{DroneId} is not valid Id")
+  })
+  @GetMapping(value = "/drones/drone/{droneId}/battery", produces = "application/json; charset=UTF-8")
+  public ResponseEntity<String> getBatteryLevelDrone(@ApiParam(name = "droneId", type = "String", value="Drone's Id", required = true) @PathVariable(name = "droneId") String droneId){
     try{
       Long id = Long.valueOf(droneId);
       return new ResponseEntity<>("Battery Level: " + droneService.checkBatteryLevel(id)+" %", HttpStatus.OK);
@@ -49,8 +63,14 @@ public class DispatchController {
     }
 
   }
-  @PostMapping("/drones/drone")
-  public ResponseEntity<DroneResponseDto> registerDrone(@RequestBody DroneDto dto){
+  @ApiOperation(value = "Register a new drone",
+      response = DroneDto.class
+  )
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "OK", response = DroneDto.class, responseContainer = "List")
+  })
+  @PostMapping(value = "/drones/drone", produces = "application/json; charset=UTF-8")
+  public ResponseEntity<DroneResponseDto> registerDrone( @RequestBody DroneDto dto){
     DroneResponseDto responseDto = new DroneResponseDto();
     if (dto.getSerialNumber().length() > MAX_CHARACTERS_SERIAL){
       dto.setSerialNumber(dto.getSerialNumber().substring(0, MAX_CHARACTERS_SERIAL));
@@ -61,7 +81,14 @@ public class DispatchController {
     return ResponseEntity.ok(responseDto);
   }
 
-  @PostMapping("/drones/drone/{droneId}/load_medications")
+  @ApiOperation(value = "Load a drone with medications",
+      response = DeliverOrderResponseDto.class
+  )
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "OK", response = DeliverOrderResponseDto.class, responseContainer = "List"),
+      @ApiResponse(code = 400, message = "Bad Request")
+  })
+  @PostMapping(value=  "/drones/drone/{droneId}/load_medications", produces = "application/json; charset=UTF-8")
   public ResponseEntity<DeliverOrderResponseDto> loadDroneWithMedication(@PathVariable Long droneId, @RequestBody List<DeliverOrderRequestDto> deliverOrder){
     DeliverOrderResponseDto response = droneService.loadDrone(droneId, deliverOrder);
     if (response.getError() == null || response.getError().isEmpty()){
@@ -70,10 +97,21 @@ public class DispatchController {
     return ResponseEntity.badRequest().body(response);
   }
 
-  @GetMapping("/medications/")
+  @ApiOperation(value = "Get the list of medications")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "OK", response = MedicationDto.class, responseContainer = "List")
+  })
+  @GetMapping(value = "/medications/", produces = "application/json; charset=UTF-8")
   public ResponseEntity<List<MedicationDto>> getMedications(){
     return ResponseEntity.ok(medicationService.getAllMedication());
   }
+  @ApiOperation(value = "Register new medications",
+      response = DeliverOrderResponseDto.class
+  )
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "OK", response = DeliverOrderResponseDto.class),
+      @ApiResponse(code = 400, message = "Bad Request")
+  })
   @PostMapping("/medications/medication")
   public ResponseEntity<MedicationResponseDto> registerMedication(@RequestBody MedicationDto dto){
     MedicationResponseDto responseDto = new MedicationResponseDto();
