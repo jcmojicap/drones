@@ -25,7 +25,7 @@ public class MyScheduler implements SchedulingConfigurer {
   public void configureTasks(ScheduledTaskRegistrar taskRegistrar) {
     taskRegistrar.addCronTask(new CronTask(() -> {
       validateBatteryDrones();
-    }, "*/5 * * * * *")); // Cron para ejecutar la rutina cada 5 minutos
+    }, "0 */5 * * * *")); // Cron para ejecutar la rutina cada 5 minutos
   }
 
   public void validateBatteryDrones(){
