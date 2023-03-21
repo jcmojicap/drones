@@ -24,7 +24,9 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-web"){
+        exclude("org.springframework.boot:spring-boot-starter-logging")
+    }
     implementation("org.mapstruct:mapstruct:1.5.3.Final")
     compileOnly("org.projectlombok:lombok")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -37,6 +39,8 @@ dependencies {
     testImplementation ("org.mockito:mockito-core:4.1.0")
     implementation ("io.springfox:springfox-swagger2:2.9.2")
     implementation ("io.springfox:springfox-swagger-ui:2.9.2")
+
+
 
 }
 
